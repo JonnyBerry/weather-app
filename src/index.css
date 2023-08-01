@@ -47,5 +47,9 @@ main{
   color: #313131;
   font-size: 20px;
 
-  transition:;
+  transition:0.4s ease;
+}
+/* dim and undim search box*/
+.search-box .search-bar:focus{
+  background-color: rgba(255,255,255, 0.75);
 }
