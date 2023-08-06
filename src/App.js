@@ -2,19 +2,28 @@
 import './App.css';
 import React, {useState} from 'react';
 const api = {
-  key: "922b24701c3a2a910e1c31e283790816",
+  key: "a253fd31d32c09d65f9fe5ac347b9b13",
   base:"https://api.openweathermap.org/data/2.5/"
-}
+};
 
 function App() {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
 
+  //search functionality/logic//
   const search = evt => {
     if (evt.key === "Enter"){
-      fetch{`${api.base}weather?q=${query}&units=metric&APPID={api.key}`}
+      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+        .then(res => res.json())
+        .then(result => {
+        setWeather(result)
+        setQuery('');
+        console.log(result)
+      });
+
     }
   }
+
 
   const dateBuilder = (d) => {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -35,10 +44,15 @@ function App() {
           type="text"
           className="search-bar"
           placeholder="Search..."
+          onChange={e => setQuery(e.target.value)}
+          value={query}
+          onKeyDown={search}
           />
-        </div>
+      </div>
+      {(typeof weather.main !="undefined")?(
+      <div>
         <div className='location-box'>
-          <div className="location">New York City. US</div>
+          <div className="location">{weather.name},{weather.sys.country}</div>
           <div className='date'>{dateBuilder(new Date())}</div>
         </div>
         <div className="classname weather-box">
@@ -47,6 +61,8 @@ function App() {
           </div>
           <div className="weather className">Sunny</div>
         </div>
+      </div>
+        )  :  ('')}
       </main>
     </div>
   );
